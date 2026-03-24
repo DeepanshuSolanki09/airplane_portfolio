@@ -23,7 +23,7 @@ import HotAirBalloon from "./HotAirBalloon";
 
 const Experience = () => {
   const texture = useTexture(
-    "https://images.unsplash.com/photo-1633356122544-f134324a6cee",
+    "/Photos/Screenshot (11).png",
   );
 
   const { viewport } = useThree();
@@ -169,7 +169,7 @@ const Experience = () => {
         </mesh>
       </group>
       {/* TEXT */}
-      <group position={[1, 0, -10]}>
+      <group position={[-2, 2, -10]}>
         <Text
           color="white"
           anchorX={"left"}
@@ -602,6 +602,10 @@ const Experience = () => {
             onBeforeCompile={fadeOnBeforeCompileFlat}
           />
         </Text>
+        <Text onClick={() => window.open("/skills","_blank")} position={[0, -2.9, 0]} color={"white"}  fontSize={0.4} onPointerOver={() => (document.body.cursor.style = "pointer")} onPointerOut={() => (document.body.cursor.style = "default")} anchorX={"left"}
+          anchorY={"middle"}>
+            More...
+        </Text>
       </group>
 
       <group position={[points[9000].x + (isMobile ? -2 : -6), points[9000].y  + (isMobile ? 2 : 0), points[9000].z]}>
@@ -640,7 +644,7 @@ const Experience = () => {
         {/* Image */}
         <mesh
           position={[1.5, -1.5, 0]}
-          onClick={() => window.open("https://example.com", "_blank")}
+          onClick={() => window.open("https://airplane-portfolio.vercel.app/", "_blank")}
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -686,10 +690,13 @@ const Experience = () => {
             />
           </Text>
         </Text>
+        <Text onClick={() => window.open("/projects","_blank")} position={[0, -4.9, 0]} color={"white"}  fontSize={0.4} onPointerOver={() => (document.body.cursor.style = "pointer")} onPointerOut={() => (document.body.cursor.style = "default")} anchorX={"left"}
+          anchorY={"middle"}>
+            More...
+        </Text>
       </group>
 
-      <group position={[points[10000].x + (isMobile ? -2 : -6), points[10000].y + (isMobile ? 6 : 0), points[10000].z]}>
-        {/* Title */}
+      {/* <group position={[points[10000].x + (isMobile ? -2 : -6), points[10000].y + (isMobile ? 6 : 0), points[10000].z]}>
         <Text
           color="white"
           anchorX="left"
@@ -703,8 +710,6 @@ const Experience = () => {
             onBeforeCompile={fadeOnBeforeCompileFlat}
           />
         </Text>
-
-        {/* Image */}
         <mesh
           position={[1.5, -1.5, 0]}
           onClick={() => window.open("https://example.com", "_blank")}
@@ -720,7 +725,6 @@ const Experience = () => {
           />
         </mesh>
 
-        {/* Description */}
         <Text
           color="white"
           anchorX="left"
@@ -753,10 +757,71 @@ const Experience = () => {
             />
           </Text>
         </Text>
-      </group>
+      </group> */}
 
-      <group position={[points[10500].x + (isMobile ? -2 : -6), points[10500].y + (isMobile ? 6 : 0), points[10500].z]}>
-        {/* Title */}
+      {/* <group position={[points[10500].x + (isMobile ? -2 : -6), points[10500].y + (isMobile ? 6 : 0), points[10500].z]}>
+        <Text
+          color="white"
+          anchorX="left"
+          anchorY="middle"
+          fontSize={0.6}
+          maxWidth={5}
+        >
+          3D Portfolio
+          <meshStandardMaterial
+            color="white"
+            onBeforeCompile={fadeOnBeforeCompileFlat}
+          />
+        </Text>
+        <mesh
+          position={[1.5, -1.5, 0]}
+          onClick={() => window.open("https://example.com", "_blank")}
+          onPointerOver={() => (document.body.style.cursor = "pointer")}
+          onPointerOut={() => (document.body.style.cursor = "default")}
+        >
+          <planeGeometry args={[2.5, 1.5]} />
+          <meshStandardMaterial
+            map={texture}
+            transparent
+            depthWrite={false}
+            onBeforeCompile={fadeOnBeforeCompileFlat}
+          />
+        </mesh>
+        <Text
+          color="white"
+          anchorX="left"
+          anchorY="top"
+          position={[0, -2.5, 0]}
+          fontSize={0.22}
+          maxWidth={3}
+        >
+          An immersive 3D portfolio{"\n"}
+          built with React Three Fiber{"\n"}
+          and custom shaders.
+          <meshStandardMaterial
+            color="white"
+            onBeforeCompile={fadeOnBeforeCompileFlat}
+          />
+          <Text
+            color="white"
+            anchorX="left"
+            anchorY="top"
+            position={[0, -1, 0]}
+            fontSize={0.2}
+            maxWidth={3}
+          >
+            Stack Used:{"\n"}
+            React, Next.js,{"\n"}
+            Three.js, R3F, GLSL
+            <meshStandardMaterial
+              color="white"
+              onBeforeCompile={fadeOnBeforeCompileFlat}
+            />
+          </Text>
+        </Text>
+      </group> */}
+
+      {/* <group position={[points[11000].x + (isMobile ? -2 : -6), points[11000].y + (isMobile ? 6 : 0), points[11000].z]}>
         <Text
           color="white"
           anchorX="left"
@@ -771,7 +836,6 @@ const Experience = () => {
           />
         </Text>
 
-        {/* Image */}
         <mesh
           position={[1.5, -1.5, 0]}
           onClick={() => window.open("https://example.com", "_blank")}
@@ -787,7 +851,6 @@ const Experience = () => {
           />
         </mesh>
 
-        {/* Description */}
         <Text
           color="white"
           anchorX="left"
@@ -820,74 +883,7 @@ const Experience = () => {
             />
           </Text>
         </Text>
-      </group>
-
-      <group position={[points[11000].x + (isMobile ? -2 : -6), points[11000].y + (isMobile ? 6 : 0), points[11000].z]}>
-        {/* Title */}
-        <Text
-          color="white"
-          anchorX="left"
-          anchorY="middle"
-          fontSize={0.6}
-          maxWidth={5}
-        >
-          3D Portfolio
-          <meshStandardMaterial
-            color="white"
-            onBeforeCompile={fadeOnBeforeCompileFlat}
-          />
-        </Text>
-
-        {/* Image */}
-        <mesh
-          position={[1.5, -1.5, 0]}
-          onClick={() => window.open("https://example.com", "_blank")}
-          onPointerOver={() => (document.body.style.cursor = "pointer")}
-          onPointerOut={() => (document.body.style.cursor = "default")}
-        >
-          <planeGeometry args={[2.5, 1.5]} />
-          <meshStandardMaterial
-            map={texture}
-            transparent
-            depthWrite={false}
-            onBeforeCompile={fadeOnBeforeCompileFlat}
-          />
-        </mesh>
-
-        {/* Description */}
-        <Text
-          color="white"
-          anchorX="left"
-          anchorY="top"
-          position={[0, -2.5, 0]}
-          fontSize={0.22}
-          maxWidth={3}
-        >
-          An immersive 3D portfolio{"\n"}
-          built with React Three Fiber{"\n"}
-          and custom shaders.
-          <meshStandardMaterial
-            color="white"
-            onBeforeCompile={fadeOnBeforeCompileFlat}
-          />
-          <Text
-            color="white"
-            anchorX="left"
-            anchorY="top"
-            position={[0, -1, 0]}
-            fontSize={0.2}
-            maxWidth={3}
-          >
-            Stack Used:{"\n"}
-            React, Next.js,{"\n"}
-            Three.js, R3F, GLSL
-            <meshStandardMaterial
-              color="white"
-              onBeforeCompile={fadeOnBeforeCompileFlat}
-            />
-          </Text>
-        </Text>
-      </group>
+      </group> */}
 
       <group position={[points[11500].x + (isMobile ? -2 : -6), points[11500].y + (isMobile ? 4 : 0), points[11500].z]}>
         {/* Title */}
@@ -913,7 +909,7 @@ const Experience = () => {
           position={[0, -0.5, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://example.com", "_blank")}
+          onClick={() => window.open("https://www.instagram.com/i_m___deepanshusolanki/", "_blank")}
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -930,7 +926,7 @@ const Experience = () => {
           position={[0, -0.8, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://example.com", "_blank")}
+          onClick={() => window.open("tel:+91 9871409724", "_blank")}
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -966,7 +962,7 @@ const Experience = () => {
           position={[0, -1.4, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://example.com", "_blank")}
+          onClick={() => window.open("mailto:solankideepanshu2006@gmail.com", "_blank")}
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -984,7 +980,7 @@ const Experience = () => {
           position={[0, -1.7, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://example.com", "_blank")}
+          onClick={() => window.open("https://www.linkedin.com/in/deepanshu-solanki-081346318/", "_blank")}
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -1002,7 +998,7 @@ const Experience = () => {
           position={[0, -2, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://example.com", "_blank")}
+          onClick={() => window.open("https://github.com/DeepanshuSolanki09", "_blank")}
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -1032,7 +1028,7 @@ const Experience = () => {
         </Text>
       </group>
       <Cloud />
-      <HotAirBalloon />
+      {/* <HotAirBalloon /> */}
 
       {/* <Clouds material={THREE.MeshStandardMaterial}>
         <Cloud

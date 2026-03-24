@@ -1,40 +1,54 @@
 import React from "react";
+import gsap from 'gsap';
 
 const HeroSection = () => {
+
+  function animater(){
+
+    const t = gsap.timeline();
+
+    t.to('.main',{
+      x : -2000,
+      duration:2,
+      ease:"power3.out"
+    },"hehe").to('.main2',{
+      x : +2000,
+      duration:2,
+      ease:"power3.out"
+    },"hehe").to('.btn1',{
+      x : 2000,
+       duration:2,
+      ease:"power3.out"
+    },"hehe").to('.btn2',{
+      y : 5000,
+       duration:1,
+      ease:"power3.out"
+    },"hehe").to('.plane',{
+      scale:5,
+      x : -700,
+      y : 700,
+      duration:2,
+      ease:"power3.out"
+    },"hehe").to('.target',{
+        opacity:0,
+        duration:3,
+        ease:"power3.out",
+        z:0,
+        display:"none",
+      },"xoxo")
+  };
+
   return (
-    <div className="h-screen w-screen font-custom p-5 sticky">
-      <img
-        src={"/Photos/1000008246.png"}
-        className="h-full w-full object-cover absolute bottom-0 left-0 z-10"
-      />
-      <img
-        src={"/Photos/1000008249.png"}
-        className="h-[500px] w-[500px] z-20 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover"
-      />
+    <div className="h-screen w-screen font-custom p-5 sticky bg-gradient-to-b from-blue-400 to-white flex items-center justify-center text-white gap-5 flex-col target absolute top-0 left-0 z-20">
+      <div>
+        <h1 className="lg:text-7xl text-4xl font-extrabold main">DEEPANSHU SOLANKI</h1>
+        <p  className="lg:text-2xl text-xl text-center main2">I'm a creative web developer</p>
+      </div>
+      <button onClick={animater} className="bg-blue-950 font-bold py-2 px-3 hover:bg-white hover:text-black transition-all duration-300 lg:text-2xl w-1/8 rounded-full cursor-pointer btn1">Explore</button>
 
-      <img
-        src={"/Photos/1000008250.png"}
-        className="h-[500px] w-[700px] z-0 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover"
-      />
-      <button className="bg-black rounded-full text-white font-bold px-3 py-2 absolute right-2 bottom-2 cursor-pointer">
-        Contact
-      </button>
+       <button onClick={() => window.open("/contact", "_blank")}  className="bg-blue-950 font-bold py-2 px-3 hover:bg-white hover:text-black transition-all duration-300 lg:text-md w-1/10 rounded-full cursor-pointer absolute bottom-5 right-5 btn2">Contact</button>
 
-      <h1 className="absolute text-xl bottom-15 left-1/2 transform -translate-x-1/2 text-black/20 z-20">
-        Scroll to explore
-      </h1>
-
-      <h1
-        className="w-full m-2 z-50 text-center font-bold font-custom text-6xl lg:text-8xl lg:m-0
-bg-gradient-to-r 
-from-red-300 via-orange-300 via-yellow-300 via-green-300 via-blue-300 to-purple-300
-bg-clip-text text-transparent stroke"
-      >
-        DEEPANSHU SOLANKI
-      </h1>
-      <h1 className="w-full text-center text-black/50 leading-0">
-        I'm a web developer
-      </h1>
+       <img src={'/Photos/1000008249.png'} className="plane absolute top-0 bottom-0 h-[100px] w-[100px] object-cover"/>
     </div>
   );
 };
