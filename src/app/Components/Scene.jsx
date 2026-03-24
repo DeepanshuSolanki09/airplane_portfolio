@@ -9,7 +9,7 @@ const Scene = () => {
   return (
     <div className="h-screen w-screen">
       <Canvas className="h-screen w-screen" camera={{ position: [0, 0, 2] }}>
-        <ScrollControls pages={100} damping={1} wrapperClass="scroll-container">
+        <ScrollControls pages={70} damping={0.1} wrapperClass="scroll-container">
           {/* <OrbitControls /> */}
           <Experience/>
         </ScrollControls>
