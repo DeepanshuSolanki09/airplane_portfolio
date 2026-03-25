@@ -22,13 +22,22 @@ import { fadeOnBeforeCompileFlat } from "../utils/fadermaterial";
 import HotAirBalloon from "./HotAirBalloon";
 
 const Experience = () => {
-  const texture = useTexture(
-    "/Photos/Screenshot (11).png",
-  );
+  const scrolloffsetRef = useRef(0);
+  const isPaused = useRef(false);
+  const pauseTime = useRef(0);
+  const pauseTarget = useRef(0);
+  const visited = useRef(new Set());
+
+  const sections = [
+    400, 1000, 1500, 2000, 2500, 3500, 4500, 5500, 6500, 7500, 8000, 8500, 9000,
+    9500,
+  ];
+
+  const texture = useTexture("/Photos/Screenshot (11).png");
 
   const { viewport } = useThree();
   const isMobile = viewport.width < 6;
-  
+
   const curve = useMemo(() => {
     return new THREE.CatmullRomCurve3(
       [
@@ -78,34 +87,48 @@ const Experience = () => {
   }, []);
 
   useFrame((state, delta) => {
-    const scrolloffset = Math.max(0, scroll.offset);
+    let rawOffset = Math.max(0, scroll.offset);
+    let currentIndex = rawOffset * points.length;
 
-    // Get points on the curve
+    let speed = 1;
+
+    sections.forEach((s) => {
+      const dist = Math.abs(currentIndex - s);
+
+      if (dist < 100) {
+        speed = 0; 
+      }
+    });
+
+    // 🎬 apply speed
+    scrolloffsetRef.current = THREE.MathUtils.lerp(
+      scrolloffsetRef.current,
+      rawOffset,
+      speed === 0 ? 0 : 0.05,
+    );
+
+    const scrolloffset = scrolloffsetRef.current;
+
     const curpoint = curve.getPoint(scrolloffset);
     const lookAtPoint = curve.getPoint(Math.min(scrolloffset + 0.01, 1));
 
-    // Smoothing factor - lower is smoother/slower
     const lerpFactor = Math.min(1, delta * 3);
 
-    // 1. Camera Group Position
+
     cameragroup.current.position.lerp(curpoint, lerpFactor);
 
-    // 2. Camera Group Rotation (Stable Slerp)
     dummyGroup.position.copy(cameragroup.current.position);
     dummyGroup.lookAt(lookAtPoint);
     cameragroup.current.quaternion.slerp(dummyGroup.quaternion, lerpFactor);
 
-    // 3. Sphere Banking Effect
-    // We calculate banking based on the change in tangent (curvature)
+ 
     const tangent = curve.getTangent(scrolloffset);
     const nextTangent = curve.getTangent(Math.min(scrolloffset + 0.01, 1));
 
-    // The cross product of the current and next tangent tells us the direction and intensity of the turn
+
     const cross = tempVec.crossVectors(tangent, nextTangent);
 
-    // cross.y will be positive for left turns and negative for right turns (or vice versa depending on curve)
-    // We use this to set the Z-axis banking
-    const targetBank = cross.y * 150; // Multiplier for banking intensity
+    const targetBank = cross.y * 150; 
     const clampedBank = Math.max(-0.5, Math.min(0.5, targetBank));
 
     tempQuat.setFromEuler(new THREE.Euler(0, 0, clampedBank));
@@ -186,7 +209,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[400].x + (isMobile ? -2 : -5), points[400].y + (isMobile ? 4 : 0), points[400].z]}>
+      <group
+        position={[
+          points[400].x + (isMobile ? -2 : -5),
+          points[400].y + (isMobile ? 4 : 0),
+          points[400].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -218,13 +247,19 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[1000].x + (isMobile ? -2 : -6), points[1000].y + (isMobile ? 4 : 0), points[1000].z]}>
+      <group
+        position={[
+          points[1000].x + (isMobile ? -2 : -6),
+          points[1000].y + (isMobile ? 4 : 0),
+          points[1000].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
           anchorY={"middle"}
           fontSize={0.66}
-          maxWidth={(isMobile ? 5 : 10)}
+          maxWidth={isMobile ? 5 : 10}
         >
           Where It All Started?
           <meshStandardMaterial
@@ -249,7 +284,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[1500].x + (isMobile ? -2 : -6), points[1500].y  + (isMobile ? 4 : 0), points[1500].z]}>
+      <group
+        position={[
+          points[1500].x + (isMobile ? -2 : -6),
+          points[1500].y + (isMobile ? 4 : 0),
+          points[1500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -281,7 +322,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[2000].x + (isMobile ? -2 : 3), points[2000].y  + (isMobile ? 4 : 0), points[2000].z]}>
+      <group
+        position={[
+          points[2000].x + (isMobile ? -2 : 3),
+          points[2000].y + (isMobile ? 4 : 0),
+          points[2000].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -313,7 +360,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[2500].x + (isMobile ? -2 : -6), points[2500].y  + (isMobile ? 4 : 0), points[2500].z]}>
+      <group
+        position={[
+          points[2500].x + (isMobile ? -2 : -6),
+          points[2500].y + (isMobile ? 4 : 0),
+          points[2500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -345,7 +398,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[3500].x + (isMobile ? -2 : -6), points[3500].y  + (isMobile ? 4 : 0), points[3500].z]}>
+      <group
+        position={[
+          points[3500].x + (isMobile ? -2 : -6),
+          points[3500].y + (isMobile ? 4 : 0),
+          points[3500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -377,7 +436,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[4500].x + (isMobile ? 0 : 6), points[4500].y  + (isMobile ? 4 : 0), points[4500].z]}>
+      <group
+        position={[
+          points[4500].x + (isMobile ? 0 : 6),
+          points[4500].y + (isMobile ? 4 : 0),
+          points[4500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -409,7 +474,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[5500].x + (isMobile ? -2 : -6), points[5500].y  + (isMobile ? 4 : 0), points[5500].z]}>
+      <group
+        position={[
+          points[5500].x + (isMobile ? -2 : -6),
+          points[5500].y + (isMobile ? 4 : 0),
+          points[5500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -441,7 +512,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[6500].x + (isMobile ? -3 : -6), points[6500].y  + (isMobile ? 5 : 0), points[6500].z]}>
+      <group
+        position={[
+          points[6500].x + (isMobile ? -3 : -6),
+          points[6500].y + (isMobile ? 5 : 0),
+          points[6500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -460,9 +537,9 @@ const Experience = () => {
           color="white"
           anchorX={"left"}
           anchorY={"middle"}
-          position-y={-2  + (isMobile ? -0.75 : 0)}
+          position-y={-2 + (isMobile ? -0.75 : 0)}
           fontSize={0.22}
-          maxWidth={(isMobile ? 6 : 10)}
+          maxWidth={isMobile ? 6 : 10}
         >
           I am a creative web developer with a strong foundation in
           problem-solving, shaped by my background in competitive programming. I
@@ -482,7 +559,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[7000].x + (isMobile ? -2 : -6), points[7000].y  + (isMobile ? 2 : 0), points[7000].z]}>
+      <group
+        position={[
+          points[7000].x + (isMobile ? -2 : -6),
+          points[7000].y + (isMobile ? 2 : 0),
+          points[7000].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -499,7 +582,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[7500].x + (isMobile ? -1 : 6), points[7500].y  + (isMobile ? 4 : 0), points[7500].z]}>
+      <group
+        position={[
+          points[7500].x + (isMobile ? -1 : 6),
+          points[7500].y + (isMobile ? 4 : 0),
+          points[7500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -534,7 +623,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[8000].x + (isMobile ? -1 : 6), points[8000].y  + (isMobile ? 4 : 0), points[8000].z]}>
+      <group
+        position={[
+          points[8000].x + (isMobile ? -1 : 6),
+          points[8000].y + (isMobile ? 4 : 0),
+          points[8000].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -569,7 +664,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[8500].x + (isMobile ? -2 : -6), points[8500].y  + (isMobile ? 4 : 0), points[8500].z]}>
+      <group
+        position={[
+          points[8500].x + (isMobile ? -2 : -6),
+          points[8500].y + (isMobile ? 4 : 0),
+          points[8500].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -602,13 +703,27 @@ const Experience = () => {
             onBeforeCompile={fadeOnBeforeCompileFlat}
           />
         </Text>
-        <Text onClick={() => window.open("/skills","_blank")} position={[0, -2.9, 0]} color={"white"}  fontSize={0.4} onPointerOver={() => (document.body.cursor.style = "pointer")} onPointerOut={() => (document.body.cursor.style = "default")} anchorX={"left"}
-          anchorY={"middle"}>
-            More...
+        <Text
+          onClick={() => window.open("/skills", "_blank")}
+          position={[0, -2.9, 0]}
+          color={"white"}
+          fontSize={0.4}
+          onPointerOver={() => (document.body.cursor.style = "pointer")}
+          onPointerOut={() => (document.body.cursor.style = "default")}
+          anchorX={"left"}
+          anchorY={"middle"}
+        >
+          More...
         </Text>
       </group>
 
-      <group position={[points[9000].x + (isMobile ? -2 : -6), points[9000].y  + (isMobile ? 2 : 0), points[9000].z]}>
+      <group
+        position={[
+          points[9000].x + (isMobile ? -2 : -6),
+          points[9000].y + (isMobile ? 2 : 0),
+          points[9000].z,
+        ]}
+      >
         <Text
           color="white"
           anchorX={"left"}
@@ -625,7 +740,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[9500].x + (isMobile ? -2 : -6), points[9500].y  + (isMobile ? 6 : 0), points[9500].z]}>
+      <group
+        position={[
+          points[9500].x + (isMobile ? -2 : -6),
+          points[9500].y + (isMobile ? 6 : 0),
+          points[9500].z,
+        ]}
+      >
         {/* Title */}
         <Text
           color="white"
@@ -644,7 +765,9 @@ const Experience = () => {
         {/* Image */}
         <mesh
           position={[1.5, -1.5, 0]}
-          onClick={() => window.open("https://airplane-portfolio.vercel.app/", "_blank")}
+          onClick={() =>
+            window.open("https://airplane-portfolio.vercel.app/", "_blank")
+          }
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -690,9 +813,17 @@ const Experience = () => {
             />
           </Text>
         </Text>
-        <Text onClick={() => window.open("/projects","_blank")} position={[0, -4.9, 0]} color={"white"}  fontSize={0.4} onPointerOver={() => (document.body.cursor.style = "pointer")} onPointerOut={() => (document.body.cursor.style = "default")} anchorX={"left"}
-          anchorY={"middle"}>
-            More...
+        <Text
+          onClick={() => window.open("/projects", "_blank")}
+          position={[0, -4.9, 0]}
+          color={"white"}
+          fontSize={0.4}
+          onPointerOver={() => (document.body.cursor.style = "pointer")}
+          onPointerOut={() => (document.body.cursor.style = "default")}
+          anchorX={"left"}
+          anchorY={"middle"}
+        >
+          More...
         </Text>
       </group>
 
@@ -885,7 +1016,13 @@ const Experience = () => {
         </Text>
       </group> */}
 
-      <group position={[points[11500].x + (isMobile ? -2 : -6), points[11500].y + (isMobile ? 4 : 0), points[11500].z]}>
+      <group
+        position={[
+          points[11500].x + (isMobile ? -2 : -6),
+          points[11500].y + (isMobile ? 4 : 0),
+          points[11500].z,
+        ]}
+      >
         {/* Title */}
         <Text
           color="white"
@@ -909,7 +1046,12 @@ const Experience = () => {
           position={[0, -0.5, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://www.instagram.com/i_m___deepanshusolanki/", "_blank")}
+          onClick={() =>
+            window.open(
+              "https://www.instagram.com/i_m___deepanshusolanki/",
+              "_blank",
+            )
+          }
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -962,7 +1104,9 @@ const Experience = () => {
           position={[0, -1.4, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("mailto:solankideepanshu2006@gmail.com", "_blank")}
+          onClick={() =>
+            window.open("mailto:solankideepanshu2006@gmail.com", "_blank")
+          }
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -980,7 +1124,12 @@ const Experience = () => {
           position={[0, -1.7, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://www.linkedin.com/in/deepanshu-solanki-081346318/", "_blank")}
+          onClick={() =>
+            window.open(
+              "https://www.linkedin.com/in/deepanshu-solanki-081346318/",
+              "_blank",
+            )
+          }
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -998,7 +1147,9 @@ const Experience = () => {
           position={[0, -2, 0]}
           fontSize={0.22}
           maxWidth={3}
-          onClick={() => window.open("https://github.com/DeepanshuSolanki09", "_blank")}
+          onClick={() =>
+            window.open("https://github.com/DeepanshuSolanki09", "_blank")
+          }
           onPointerOver={() => (document.body.style.cursor = "pointer")}
           onPointerOut={() => (document.body.style.cursor = "default")}
         >
@@ -1010,7 +1161,13 @@ const Experience = () => {
         </Text>
       </group>
 
-      <group position={[points[12000].x + (isMobile ? -2 : -6), points[12000].y + (isMobile ? 4 : 0) , points[12000].z]}>
+      <group
+        position={[
+          points[12000].x + (isMobile ? -2 : -6),
+          points[12000].y + (isMobile ? 4 : 0),
+          points[12000].z,
+        ]}
+      >
         {/* Title */}
         <Text
           color="white"
