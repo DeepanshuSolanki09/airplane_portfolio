@@ -87,53 +87,50 @@ const Experience = () => {
   }, []);
 
   useFrame((state, delta) => {
-    let rawOffset = Math.max(0, scroll.offset);
-    let currentIndex = rawOffset * points.length;
+  let rawOffset = Math.max(0, scroll.offset);
+  let currentIndex = rawOffset * points.length;
 
-    let speed = 1;
+  let lerpSpeed = 0.05;
 
-    sections.forEach((s) => {
-      const dist = Math.abs(currentIndex - s);
+  sections.forEach((s) => {
+    const dist = Math.abs(currentIndex - s);
 
-      if (dist < 100) {
-        speed = 0; 
-      }
-    });
-
-    // 🎬 apply speed
-    scrolloffsetRef.current = THREE.MathUtils.lerp(
-      scrolloffsetRef.current,
-      rawOffset,
-      speed === 0 ? 0 : 0.05,
-    );
-
-    const scrolloffset = scrolloffsetRef.current;
-
-    const curpoint = curve.getPoint(scrolloffset);
-    const lookAtPoint = curve.getPoint(Math.min(scrolloffset + 0.01, 1));
-
-    const lerpFactor = Math.min(1, delta * 3);
-
-
-    cameragroup.current.position.lerp(curpoint, lerpFactor);
-
-    dummyGroup.position.copy(cameragroup.current.position);
-    dummyGroup.lookAt(lookAtPoint);
-    cameragroup.current.quaternion.slerp(dummyGroup.quaternion, lerpFactor);
-
- 
-    const tangent = curve.getTangent(scrolloffset);
-    const nextTangent = curve.getTangent(Math.min(scrolloffset + 0.01, 1));
-
-
-    const cross = tempVec.crossVectors(tangent, nextTangent);
-
-    const targetBank = cross.y * 150; 
-    const clampedBank = Math.max(-0.5, Math.min(0.5, targetBank));
-
-    tempQuat.setFromEuler(new THREE.Euler(0, 0, clampedBank));
-    sphereRef.current.quaternion.slerp(tempQuat, delta * 4);
+    if (dist < 150) {
+      const slowFactor = dist / 150;
+      lerpSpeed = Math.min(lerpSpeed, THREE.MathUtils.lerp(0.008, 0.05, slowFactor));
+    }
   });
+
+  scrolloffsetRef.current = THREE.MathUtils.lerp(
+    scrolloffsetRef.current,
+    rawOffset,
+    lerpSpeed,  
+  );
+
+  const scrolloffset = scrolloffsetRef.current;
+
+  const curpoint = curve.getPoint(scrolloffset);
+  const lookAtPoint = curve.getPoint(Math.min(scrolloffset + 0.01, 1));
+
+  const lerpFactor = Math.min(1, delta * 3);
+
+  cameragroup.current.position.lerp(curpoint, lerpFactor);
+
+  dummyGroup.position.copy(cameragroup.current.position);
+  dummyGroup.lookAt(lookAtPoint);
+  cameragroup.current.quaternion.slerp(dummyGroup.quaternion, lerpFactor);
+
+  const tangent = curve.getTangent(scrolloffset);
+  const nextTangent = curve.getTangent(Math.min(scrolloffset + 0.01, 1));
+
+  const cross = tempVec.crossVectors(tangent, nextTangent);
+
+  const targetBank = cross.y * 150;
+  const clampedBank = Math.max(-0.5, Math.min(0.5, targetBank));
+
+  tempQuat.setFromEuler(new THREE.Euler(0, 0, clampedBank));
+  sphereRef.current.quaternion.slerp(tempQuat, delta * 4);
+});
 
   return (
     <>

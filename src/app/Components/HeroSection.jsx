@@ -48,6 +48,10 @@ const HeroSection = () => {
 
        <button onClick={() => window.open("/contact", "_blank")}  className="bg-blue-950 font-bold py-2 px-3 hover:bg-white hover:text-black transition-all duration-300 lg:text-md lg:w-1/10 rounded-full cursor-pointer absolute bottom-5 right-5 btn2">Contact</button>
 
+       <button onClick={() => window.open("/skills", "_blank")}  className="bg-blue-950 font-bold py-2 px-3 hover:bg-white hover:text-black transition-all duration-300 lg:text-md lg:w-1/10 rounded-full cursor-pointer absolute bottom-5 lg:right-40 right-35 btn2">Skills</button>
+
+       <button onClick={() => window.open("/projects", "_blank")}  className="bg-blue-950 font-bold py-2 px-3 hover:bg-white hover:text-black transition-all duration-300 lg:text-md lg:w-1/10 rounded-full cursor-pointer absolute bottom-5 lg:right-75 right-60 btn2">Projects</button>
+
        <img src={'/Photos/1000008249.png'} className="plane absolute top-0 bottom-0 h-[100px] w-[100px] object-cover"/>
     </div>
   );
